@@ -38,6 +38,17 @@ public class Main {
         }
     }
 
+    static Function<Integer, Optional<Integer>> canReturnNullButFilteredWithNullable = x -> {
+        if (x == null) {
+            x = -1;
+        } else if (x == 2) {
+            x = null;
+        } else {
+            x = x + 1;
+        }
+        return Optional.ofNullable(x);
+    };
+
     public static void main(String[] args) {
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -78,13 +89,40 @@ public class Main {
 
 
 
+
+
 	// ЛОМАЕМ ЗАКОН IDENTITY для flatMap()
+    // LEFT IDENTITY
+        /*
+        Left identity, applying the unit function to a value and then binding the resulting monad to function f
+         is the same as calling f on the same value:
+         let f be a function returning a monad, then bind(unit(value), f) === f(value).
+        */
 
 
+        //мы ожидаем что Optional от какого-то числа с примененной к нему функцией будет всегда равен
+        //если к некоторой единичной функции   применить значение (1 или 2 или null) и связать результирующую монаду с функцией canReturnNullButFilteredWithNullable
+        //это будет то же самое, что и вызов функции canReturnNullButFilteredWithNullable с этим параметром (1 или 2 или null)
+        Boolean b1 = Optional.of(1).flatMap(canReturnNullButFilteredWithNullable).equals(canReturnNullButFilteredWithNullable.apply(1));// true, Optional[2] === Optional[2]
+        System.out.println(b1);
+        Boolean b2 = Optional.of(2).flatMap(canReturnNullButFilteredWithNullable).equals(canReturnNullButFilteredWithNullable.apply(2));// true, Optional.empty === Optional.empty
+        System.out.println(b2);
+        Boolean b3 = Optional.ofNullable((Integer) null).flatMap(canReturnNullButFilteredWithNullable).equals(canReturnNullButFilteredWithNullable.apply(null));// false -
+        System.out.println(b3);
+        //Но выходит что есть различия
+        System.out.println(Optional.ofNullable((Integer) null).flatMap(canReturnNullButFilteredWithNullable));     // prints "Optional.empty"
+        System.out.println(canReturnNullButFilteredWithNullable.apply(null));                                   // prints "Optional[-1]" что и ожидали от функции
 
+
+        //При этом, помним, что flatMap используется для работы со стримами!
+//        https://vertex-academy.com/tutorials/ru/java-8-stream-flatmap/?doing_wp_cron=1581002847.1219990253448486328125
 
 
     }
+
+
+
+
 }
 
 
