@@ -100,7 +100,8 @@ public class Main {
         */
 
 
-        //мы ожидаем что Optional от какого-то числа с примененной к нему функцией будет всегда равен
+        //мы ожидаем что Optional от какого-то значения с примененной к нему функцией flatMap(от функции) будет всегда равен функции с вызванным значением
+        //ведь теория о монадах(а именно left identity law) гласит:
         //если к некоторой единичной функции   применить значение (1 или 2 или null) и связать результирующую монаду с функцией canReturnNullButFilteredWithNullable
         //это будет то же самое, что и вызов функции canReturnNullButFilteredWithNullable с этим параметром (1 или 2 или null)
         Boolean b1 = Optional.of(1).flatMap(canReturnNullButFilteredWithNullable).equals(canReturnNullButFilteredWithNullable.apply(1));// true, Optional[2] === Optional[2]
