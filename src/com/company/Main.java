@@ -149,11 +149,13 @@ public class Main {
  //  по сигнатуре ближе всего для Option - flatMap()
  но в нем исп this
 
+    SCALA:
     *@inline final def flatMap[B](f:A=>Option[B]):Option[B]=
         if(isEmpty)None else f(this.get)}
 
     в jav-овском flatMape-вклинена проверка на Null,что уже каноническое определение монады ломает
 
+    JAVA:
     public<U> Optional<U> flatMap(Function<? super T,Optional<U>>var1){
         Objects.requireNonNull(var1);
         return!this.isPresent()?empty():(Optional)Objects.requireNonNull(var1.apply(this.value));
